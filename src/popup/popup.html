@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Teams 辅助打字</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="app">
+      <header class="app-header">
+        <img class="app-icon" src="../../icons/icon-48.png" alt="" width="36" height="36">
+        <div class="app-title-group">
+          <h1>Teams 辅助打字</h1>
+          <p>快速插入常用回复</p>
+        </div>
+      </header>
+
+      <section class="section phrase-editor-card">
+        <div class="section-title-row">
+          <h2 id="form-title">新建词组</h2>
+          <span class="privacy-badge">内容仅保存在本机</span>
+        </div>
+        <form id="phrase-form" class="phrase-form">
+          <input type="hidden" id="phrase-id">
+          <label>
+            <span>按钮名称</span>
+            <input id="phrase-name" maxlength="80" placeholder="例如：问候" required>
+          </label>
+          <label>
+            <span>完整文字</span>
+            <textarea id="phrase-text" rows="4" placeholder="例如：您好，我现在看一下，稍后回复您。" required></textarea>
+          </label>
+          <div class="form-actions">
+            <button id="save-phrase" type="submit" class="button button-primary">＋ 添加词组</button>
+            <button id="cancel-edit" type="button" class="secondary" hidden>取消编辑</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="section settings-card">
+        <div class="section-title-row">
+          <h2>页面工具栏</h2>
+        </div>
+        <div class="settings-grid">
+          <label class="switch-row">
+            <input id="enabled" type="checkbox">
+            <span>开启页面工具栏</span>
+          </label>
+          <label class="switch-row">
+            <input id="compact-mode" type="checkbox">
+            <span>紧凑模式</span>
+          </label>
+          <label>
+            <span>插入方式</span>
+            <select id="insert-mode">
+              <option value="cursor">在光标位置插入</option>
+              <option value="append">追加到现有文字末尾</option>
+              <option value="replace">替换输入框全部内容</option>
+            </select>
+          </label>
+          <label>
+            <span>每行按钮数</span>
+            <input id="columns" type="number" min="1" max="10" step="1">
+          </label>
+        </div>
+      </section>
+
+      <section class="phrase-list-section" aria-labelledby="phrase-list-title">
+        <div class="list-title-row">
+          <h2 id="phrase-list-title">我的词组</h2>
+          <span id="phrase-count" class="count-badge">0 个</span>
+        </div>
+        <div id="phrase-list" class="phrase-list"></div>
+      </section>
+
+      <section class="section backup-card">
+        <div class="section-title-row">
+          <div>
+            <h2>备份与恢复</h2>
+            <p class="section-copy">词组只会保存在你的电脑中，不会上传到服务器。</p>
+          </div>
+        </div>
+        <div class="form-actions backup-buttons">
+          <button id="export-config" type="button" class="secondary icon-text-button" data-icon="download">导出词组</button>
+          <button id="import-trigger" type="button" class="secondary icon-text-button" data-icon="upload">导入词组</button>
+          <input id="import-config" type="file" accept=".json,application/json" hidden>
+          <button id="restore-backup" type="button" class="secondary icon-text-button" data-icon="history">恢复最近备份</button>
+          <button id="undo-import" type="button" class="secondary" hidden>撤销本次导入</button>
+        </div>
+        <p id="backup-hint" class="hint">导入前会自动创建本地备份，便于恢复。</p>
+        <button id="reset-defaults" type="button" class="danger">恢复默认设置</button>
+      </section>
+    </main>
+
+    <div id="tth-floating-layer"></div>
+    <div id="status" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <section id="import-preview" class="modal" hidden>
+      <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="import-preview-title">
+        <header class="modal-header">
+          <h2 id="import-preview-title">导入预览</h2>
+          <button id="close-import-preview" type="button" class="icon-close" title="关闭">×</button>
+        </header>
+        <div id="import-summary" class="preview-summary"></div>
+        <div id="import-warning" class="warning" hidden>替换全部会删除当前所有词组。正式替换前会自动创建本地备份。</div>
+        <fieldset class="import-mode">
+          <legend>导入方式</legend>
+          <label class="switch-row">
+            <input type="radio" name="import-mode" value="merge" checked>
+            <span>合并导入</span>
+          </label>
+          <p class="hint">保留现有词组，并把导入文件中的词组添加进来。</p>
+          <label class="switch-row">
+            <input type="radio" name="import-mode" value="replace">
+            <span>替换全部</span>
+          </label>
+          <p class="hint">删除现有词组，并使用导入文件中的词组和设置。</p>
+        </fieldset>
+        <label class="switch-row">
+          <input id="import-settings" type="checkbox">
+          <span>同时导入插件设置</span>
+        </label>
+        <div id="phrase-preview-list" class="preview-list"></div>
+        <p id="preview-more" class="hint"></p>
+        <div class="form-actions modal-actions">
+          <button id="confirm-import" type="button">确认导入</button>
+          <button id="cancel-import" type="button" class="secondary">取消</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="delete-confirm" class="modal" hidden>
+      <div class="modal-panel confirm-panel" role="dialog" aria-modal="true" aria-labelledby="delete-confirm-title" aria-describedby="delete-confirm-copy">
+        <h2 id="delete-confirm-title">删除这个词组？</h2>
+        <p id="delete-confirm-copy" class="section-copy">删除后无法从当前列表恢复。</p>
+        <div class="form-actions modal-actions">
+          <button id="cancel-delete" type="button" class="secondary">取消</button>
+          <button id="confirm-delete" type="button" class="danger-inline">删除</button>
+        </div>
+      </div>
+    </section>
+
+    <script src="../shared/config.js"></script>
+    <script src="../import-export/export-data.js"></script>
+    <script src="../import-export/migrate-import.js"></script>
+    <script src="../import-export/validate-import.js"></script>
+    <script src="../import-export/import-data.js"></script>
+    <script src="../import-export/import-backup.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

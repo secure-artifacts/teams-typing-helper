@@ -1,0 +1,354 @@
+.tth-root,
+.tth-root * {
+  box-sizing: border-box;
+}
+
+.tth-root {
+  --color-primary: #4f65d9;
+  --color-primary-hover: #4055c7;
+  --color-primary-active: #3548ad;
+  --color-primary-soft: #eef1ff;
+  --color-purple: #7657e8;
+  --color-danger: #dc4c64;
+  --color-danger-soft: #fff0f3;
+  --color-bg: #f5f7fb;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f8f9ff;
+  --color-text: #172033;
+  --color-text-secondary: #647087;
+  --color-text-muted: #8993a7;
+  --color-border: #dfe3ec;
+  --color-border-hover: #c9d0df;
+  --shadow-sm: 0 2px 8px rgba(30, 45, 80, 0.06);
+  --shadow-md: 0 8px 24px rgba(30, 45, 80, 0.10);
+  --transition: 160ms ease;
+  position: fixed;
+  z-index: 2147483646;
+  width: min(380px, calc(100vw - 32px));
+  padding: 8px;
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(205, 211, 225, 0.9);
+  border-radius: 14px;
+  box-shadow:
+    0 12px 35px rgba(30, 42, 75, 0.16),
+    0 2px 8px rgba(30, 42, 75, 0.08);
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Microsoft YaHei",
+    Arial,
+    sans-serif;
+  font-size: 13px;
+  line-height: 1.35;
+  overflow: visible;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.tth-root button {
+  font: inherit;
+}
+
+.tth-root :focus-visible {
+  outline: 3px solid rgba(79, 101, 217, 0.28);
+  outline-offset: 2px;
+}
+
+.tth-root.tth-compact {
+  width: min(316px, calc(100vw - 32px));
+  font-size: 12px;
+}
+
+.tth-header {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 2px;
+  cursor: move;
+  user-select: none;
+}
+
+.tth-app-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-purple));
+  border-radius: 7px;
+  box-shadow: 0 4px 10px rgba(79, 101, 217, 0.2);
+}
+
+.tth-app-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.tth-title {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tth-status {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #aab3c2;
+  box-shadow: 0 0 0 3px rgba(170, 179, 194, 0.18);
+}
+
+.tth-status.tth-ok {
+  background: #2fa66a;
+  box-shadow: 0 0 0 3px rgba(47, 166, 106, 0.16);
+}
+
+.tth-status.tth-error {
+  background: var(--color-danger);
+  box-shadow: 0 0 0 3px rgba(220, 76, 100, 0.16);
+}
+
+.tth-icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  line-height: 1;
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    transform 180ms ease;
+}
+
+.tth-icon-button svg {
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+.tth-icon-button:hover {
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+  border-color: #d8ddff;
+}
+
+.tth-toggle-button .tth-chevron {
+  transition: transform 180ms ease;
+}
+
+.tth-root.tth-collapsed .tth-toggle-button .tth-chevron {
+  transform: rotate(-90deg);
+}
+
+.tth-body {
+  display: grid;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.tth-toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  color: var(--color-text-secondary);
+  background: #f6f7fc;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.45;
+  box-shadow: var(--shadow-sm);
+}
+
+.tth-toast::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #aab3c2;
+}
+
+.tth-toast.tth-ok::before {
+  background: #2fa66a;
+}
+
+.tth-toast.tth-error::before {
+  background: var(--color-danger);
+}
+
+.tth-tools {
+  display: grid;
+  gap: 7px;
+  padding: 8px;
+  background: #f7f8fc;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+.tth-tools[hidden] {
+  display: none;
+}
+
+.tth-tools-title {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.tth-tool-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+.tth-tool-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 34px;
+  padding: 7px 9px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 650;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
+}
+
+.tth-tool-button svg {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+}
+
+.tth-tool-button:hover,
+.tth-tool-button:focus {
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+  border-color: #9eacf4;
+  box-shadow: 0 4px 10px rgba(79, 101, 217, 0.12);
+  transform: translateY(-1px);
+}
+
+.tth-buttons {
+  display: grid;
+  grid-template-columns: repeat(var(--tth-columns, 3), minmax(0, 1fr));
+  gap: 7px;
+}
+
+.tth-phrase-button {
+  min-width: 0;
+  min-height: 36px;
+  padding: 7px 12px;
+  color: #28324a;
+  background: #f8f9fd;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
+}
+
+.tth-compact .tth-phrase-button {
+  min-height: 32px;
+  padding: 6px 9px;
+  font-size: 12px;
+}
+
+.tth-phrase-button:hover,
+.tth-phrase-button:focus {
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+  border-color: #9eacf4;
+  box-shadow: 0 4px 10px rgba(79, 101, 217, 0.12);
+  transform: translateY(-1px);
+}
+
+.tth-phrase-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.tth-empty {
+  padding: 10px;
+  color: var(--color-text-secondary);
+  background: #f7f8fc;
+  border: 1px dashed var(--color-border-hover);
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.tth-root.tth-collapsed {
+  width: auto;
+  padding: 6px;
+}
+
+.tth-root.tth-collapsed .tth-header {
+  grid-template-columns: auto;
+  min-height: 28px;
+  padding: 0;
+}
+
+.tth-root.tth-collapsed .tth-app-icon,
+.tth-root.tth-collapsed .tth-title,
+.tth-root.tth-collapsed .tth-more-button,
+.tth-root.tth-collapsed .tth-status,
+.tth-root.tth-collapsed .tth-body {
+  display: none;
+}
+
+@media (max-width: 340px) {
+  .tth-buttons,
+  .tth-tool-buttons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tth-root *,
+  .tth-root *::before,
+  .tth-root *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

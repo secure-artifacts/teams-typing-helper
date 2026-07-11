@@ -1,0 +1,14 @@
+{
+  "name": "teams-typing-helper",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Manifest V3 browser extension for inserting saved phrases into Microsoft Teams web chats.",
+  "scripts": {
+    "build": "node scripts/build-extension.js",
+    "test": "node --test tests/unit/*.test.js tests/browser/*.test.js",
+    "test:unit": "node --test tests/unit/*.test.js",
+    "test:browser": "node --test tests/browser/*.test.js",
+    "validate": "node scripts/validate-extension.js"
+  },
+  "devDependencies": {}
+}

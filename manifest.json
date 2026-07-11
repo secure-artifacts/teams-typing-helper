@@ -1,0 +1,55 @@
+{
+  "manifest_version": 3,
+  "name": "Teams 辅助打字插件",
+  "description": "在 Microsoft Teams 网页版中通过本地常用词组按钮插入消息文本，不自动发送、不上传数据。",
+  "version": "0.1.0",
+  "action": {
+    "default_title": "Teams 辅助打字",
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://teams.live.com/v2/*",
+        "https://teams.microsoft.com/*",
+        "https://teams.cloud.microsoft/*"
+      ],
+      "js": [
+        "src/content/main-bridge.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://teams.live.com/v2/*",
+        "https://teams.microsoft.com/*",
+        "https://teams.cloud.microsoft/*"
+      ],
+      "js": [
+        "src/shared/config.js",
+        "src/content/content-script.js"
+      ],
+      "css": [
+        "src/content/toolbar.css"
+      ],
+      "run_at": "document_idle",
+      "world": "ISOLATED"
+    }
+  ]
+}
