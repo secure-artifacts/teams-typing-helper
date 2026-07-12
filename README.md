@@ -154,6 +154,23 @@ teams-typing-helper-backup-YYYY-MM-DD-HHmmss.json
 - 真实 Teams 可能把编辑器放在 iframe 或 Shadow DOM 中。当前 bridge 会检测 open Shadow Root，并在诊断中标出 iframe 迹象；如果日志证明输入框确实在 iframe 中，再继续实现 frame 路由。
 - 当前优先修复 `https://teams.live.com/v2/` 的 CKEditor 5 输入框；其他 Teams 域名仍保留普通编辑器备用逻辑。
 
+## 安全发布
+
+当前安全发布版本：`v0.1.0`
+
+- 仓库：[secure-artifacts/teams-typing-helper](https://github.com/secure-artifacts/teams-typing-helper)
+- Release：[v0.1.0](https://github.com/secure-artifacts/teams-typing-helper/releases/tag/v0.1.0)
+- 下载：[teams-typing-helper-v0.1.0.zip](https://github.com/secure-artifacts/teams-typing-helper/releases/download/v0.1.0/teams-typing-helper-v0.1.0.zip)
+- SHA-256：`8fcac42e1c0bd33fe47743c812c8092c7e98c03bf1fa2ffcd1e5fcf7c78eae18`
+- CI Run：[29200092001](https://github.com/secure-artifacts/teams-typing-helper/actions/runs/29200092001)
+
+验证发布包 provenance：
+
+```powershell
+gh release download v0.1.0 --repo secure-artifacts/teams-typing-helper --pattern "*.zip" --dir release --clobber
+gh attestation verify .\release\teams-typing-helper-v0.1.0.zip --repo secure-artifacts/teams-typing-helper
+```
+
 ## 开发和测试
 
 校验：
